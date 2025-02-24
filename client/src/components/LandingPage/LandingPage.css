@@ -1,0 +1,58 @@
+/* src/components/LandingPage/LandingPage.css */
+
+.landing-page {
+  display: flex;
+  flex-direction: column; /* Stack header and content vertically */
+  height: 100vh; /* Full height of the viewport */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; /* Align items to the left and right */
+  align-items: center; /* Center vertically */
+  padding: 20px;
+  background-color: #575757;
+  width: 100%; /* Ensure header spans the full width */
+  border-bottom: 2px solid #1DB954;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #dad5d5;
+}
+
+.login-button {
+  padding: 10px 20px;
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #11913e;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1; /* Take up the remaining space */
+  padding: 50px 20px;
+}
+
+.main-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #dad5d5;
+}
+
+.main-content p {
+  font-size: 1.25rem;
+  margin-bottom: 40px;
+  color: #dad5d5;
+}
