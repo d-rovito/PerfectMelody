@@ -1,37 +1,22 @@
+/* Dashboard.css */
 .dashboard-container {
     display: flex;
     height: 100vh;
+    flex-direction: row;
 }
 
 .content {
     margin-left: 200px;
-    padding: 20px;
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.search-container {
-    width: 100%;
-    max-width: 600px;
-}
-
-.search-results {
-    width: 100%;
-    max-width: 600px;
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-top: 10px;
+    width: calc(100% - 200px); /* Ensures content width doesn't push the player */
 }
 
 .player-container {
-    width: 100%;
     position: fixed;
     bottom: 0;
-    left: 200px;
-    right: 0;
+    width: 100%; /* Ensures full width minus sidebar */
     background-color: black;
     padding: 10px 0;
+    margin: 0; /* Removes any default margin */
+    z-index: 1000;
 }

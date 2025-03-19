@@ -1,0 +1,84 @@
+/* Search.css */
+.content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+}
+
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    flex-grow: 1;
+}
+
+.search-results {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 10px;
+    overflow-y: auto;
+    border: 1px solid #ddd; /* Adds a light gray border */
+    border-radius: 4px; /* Optional: rounds the corners */
+    background-color: #fff; /* Optional: ensures background contrasts with border */
+}
+
+/* Style for the search input */
+.search-container input[type="search"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.search-container input[type="search"]:focus {
+    outline: none;
+    border-color: #1db954;
+    box-shadow: 0 0 5px rgba(29, 185, 84, 0.5);
+}
+
+/* Style for individual track results */
+.search-results .track-result {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-results .track-result:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style for track image */
+.search-results .track-result img {
+    width: 64px;
+    height: 64px;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+
+/* Style for track text (title and artist) */
+.search-results .track-result div {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.search-results .track-result div p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-results .track-result div p:first-child {
+    font-weight: bold; /* Title */
+}
+
+.search-results .track-result div p:last-child {
+    color: #666; /* Artist */
+    font-size: 14px;
+}

@@ -1,24 +1,29 @@
 .sidebar {
-    width: 200px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    background-color: black;
-    color: white;
+    width: 100px;
+    background-color: #767676;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
+    align-items: center; /* Centers icons horizontally */
 }
 
 .sidebar a {
-    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers icon inside the anchor */
+    width: 100%; /* Makes the link full width */
+    padding: 15px 0; /* Adjusts spacing */
     text-decoration: none;
-    padding: 15px;
-    display: block;
-    font-size: 18px;
+    color: #fff;
 }
 
-.sidebar a:hover {
-    background-color: #333;
+.sidebar-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease; /* Smooth scaling */
+}
+
+.sidebar a:hover .sidebar-icon {
+    transform: scale(1.2); /* 20% larger on hover */
+    filter: brightness(0) invert(1);
 }
