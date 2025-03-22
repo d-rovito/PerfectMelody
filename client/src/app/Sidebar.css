@@ -1,29 +1,32 @@
+/* Sidebar Formatting*/
 .sidebar {
-    width: 100px;
+    width: 72px;
     background-color: #767676;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers icons horizontally */
+    align-items: center;
 }
 
+/* Sidebar Icon Formatting */
 .sidebar a {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centers icon inside the anchor */
-    width: 100%; /* Makes the link full width */
-    padding: 15px 0; /* Adjusts spacing */
-    text-decoration: none;
+    justify-content: center;
+    width: 100%;
+    padding: 15px 0;
     color: #fff;
 }
 
+/* Sidebar Icon Hover Formatting */
 .sidebar-icon {
     width: 40px;
     height: 40px;
-    transition: transform 0.2s ease; /* Smooth scaling */
+    transition: transform 0.2s ease;
 }
 
+/* Sidebar Icon Hover Effect */
 .sidebar a:hover .sidebar-icon {
-    transform: scale(1.2); /* 20% larger on hover */
+    transform: scale(1.2);
     filter: brightness(0) invert(1);
 }

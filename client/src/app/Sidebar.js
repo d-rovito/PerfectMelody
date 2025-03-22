@@ -2,19 +2,23 @@ import React from 'react';
 import Image from 'next/image';
 import './Sidebar.css';
 import homeIcon from './assets/home.svg';
-import playlistIcon from './assets/playlist.svg'; // Corrected name
+import playlistIcon from './assets/playlist.svg';
 import personIcon from './assets/person.svg';
 
-export default function Sidebar() {
+export default function Sidebar({ onSectionChange }) {
+    const handleClick = (section) => {
+        onSectionChange(section);
+    };
+
     return (
         <div className="sidebar">
-            <a href="#home">
+            <a href="#home" onClick={() => handleClick('home')}>
                 <Image src={homeIcon} alt="Home" className="sidebar-icon" />
             </a>
-            <a href="#playlists">
+            <a href="#playlists" onClick={() => handleClick('playlists')}>
                 <Image src={playlistIcon} alt="Playlists" className="sidebar-icon" />
             </a>
-            <a href="#users">
+            <a href="#users" onClick={() => handleClick('users')}>
                 <Image src={personIcon} alt="Users" className="sidebar-icon" />
             </a>
         </div>

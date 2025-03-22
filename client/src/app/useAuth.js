@@ -7,7 +7,7 @@ const authState = {
   refreshToken: null,
   expiresIn: null,
   hasFetched: false,
-  isFetching: false, // New flag to prevent concurrent requests
+  isFetching: false, // New flag to fix concurrent requests issue
 };
 
 export default function useAuth(code) {
@@ -15,6 +15,7 @@ export default function useAuth(code) {
   const [refreshToken, setRefreshToken] = useState(authState.refreshToken);
   const [expiresIn, setExpiresIn] = useState(authState.expiresIn);
 
+  // Effect to fetch the access token
   useEffect(() => {
     // Skip if no code, already fetched, or currently fetching
     if (!code || authState.hasFetched || authState.isFetching) {
@@ -26,6 +27,7 @@ export default function useAuth(code) {
 
     authState.isFetching = true; // Mark as fetching to block concurrent requests
 
+    // Fetch the access token
     axios
       .post('http://localhost:3001/login', { code })
       .then(res => {
@@ -44,8 +46,9 @@ export default function useAuth(code) {
         authState.isFetching = false;
         window.location = '/';
       });
-  }, [code]); // Only depend on code
+  }, [code]);
 
+  // Effect to refresh the access token
   useEffect(() => {
     if (!refreshToken || !expiresIn) return;
 

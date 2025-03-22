@@ -1,27 +1,27 @@
-// Search.js
 import { useState, useEffect } from 'react';
 import { Container, Form } from 'react-bootstrap';
-import TrackSearchResult from './TrackSearchResult';
 import './Search.css';
 
-export default function Search({ spotifyApi, accessToken, chooseTrack }) {
-    const [search, setSearch] = useState("");
+export default function Search({ spotifyApi, accessToken, chooseTrack, setDisplayedResults, searchQuery, setSearchQuery }) {
     const [searchResults, setSearchResults] = useState([]);
-    const [displayedResults, setDisplayedResults] = useState([]);
 
+    // Effect to search for tracks when the search query changes
     useEffect(() => {
-        if (!search) {
+        if (!searchQuery) {
             setSearchResults([]);
             setDisplayedResults([]);
             return;
         }
         if (!accessToken) return;
 
+        //  Cancel the previous search request if a new one is made
         let cancel = false;
-
-        spotifyApi.searchTracks(search).then(res => {
+        
+        // Search for tracks using the Spotify API
+        spotifyApi.searchTracks(searchQuery).then(res => {
             if (cancel) return;
             const results = res.body.tracks.items.map(track => {
+                // Find the smallest album image
                 const smallestAlbumImage = track.album.images.reduce(
                     (smallest, image) => {
                         if (image.height < smallest.height) return image;
@@ -35,29 +35,15 @@ export default function Search({ spotifyApi, accessToken, chooseTrack }) {
                     albumUrl: smallestAlbumImage.url
                 };
             });
+            // Set the search results and displayed results
             setSearchResults(results);
-            setDisplayedResults(results.slice(0, 6));
+            setDisplayedResults(results);
         }).catch(err => {
             console.error('Search error:', err);
         });
-
+        
         return () => (cancel = true);
-    }, [search, accessToken, spotifyApi]);
-
-    const loadMoreResults = () => {
-        setDisplayedResults(prevResults => {
-            const newResults = searchResults.slice(prevResults.length, prevResults.length + 6);
-            return [...prevResults, ...newResults];
-        });
-    };
-
-    const handleScroll = (e) => {
-        const element = e.target;
-        const bottom = Math.abs(element.scrollHeight - (element.scrollTop + element.clientHeight)) <= 1;
-        if (bottom) {
-            loadMoreResults();
-        }
-    };
+    }, [searchQuery, accessToken, spotifyApi, setDisplayedResults]);
 
     return (
         <Container className="content">
@@ -65,24 +51,9 @@ export default function Search({ spotifyApi, accessToken, chooseTrack }) {
                 <Form.Control 
                     type="search" 
                     placeholder="Search Songs/Artists"
-                    value={search} 
-                    onChange={e => setSearch(e.target.value)} 
+                    value={searchQuery} 
+                    onChange={e => setSearchQuery(e.target.value)} 
                 />
-                {search && displayedResults.length > 0 && (
-                    <div 
-                        className="search-results"
-                        style={{ overflowY: "auto", maxHeight: "400px" }}
-                        onScroll={handleScroll}
-                    >
-                        {displayedResults.map(track => (
-                            <TrackSearchResult 
-                                track={track} 
-                                key={track.uri} 
-                                chooseTrack={chooseTrack} 
-                            />
-                        ))}
-                    </div>
-                )}
             </div>
         </Container>
     );

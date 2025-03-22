@@ -26,4 +26,4 @@ This web app uses **React** (with **Next.js** router) and the **Spotify API** to
 
 ## Current Look
 
-![Current Look](https://i.postimg.cc/8kj9brGn/Screenshot-2025-03-18-225132.png)
+![Current Look](https://i.postimg.cc/SxtrGxdk/Screenshot-2025-03-22-020036.png)

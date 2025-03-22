@@ -1,22 +1,102 @@
-/* Dashboard.css */
+/* Declaring sidebar width to help format results */
+:root {
+    --sidebar-width: 72px;
+}
+
+/* Grids all content */
 .dashboard-container {
     display: flex;
     height: 100vh;
-    flex-direction: row;
+    overflow: hidden;
 }
 
-.content {
-    margin-left: 200px;
-    flex-grow: 1;
-    width: calc(100% - 200px); /* Ensures content width doesn't push the player */
+/* Grids Search, Content, Player */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
-.player-container {
+/* Space for Main Content */
+.content-area {
+    flex: 1; 
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Search Results */
+.search-results-overlay {
     position: fixed;
-    bottom: 0;
-    width: 100%; /* Ensures full width minus sidebar */
-    background-color: black;
-    padding: 10px 0;
-    margin: 0; /* Removes any default margin */
-    z-index: 1000;
+    top: 65px;
+    left: calc(50% + var(--sidebar-width) / 2);
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+    max-height: 50vh;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 200;
+    padding: 10px;
+}
+
+/* Scrollbar styles for search results */
+.search-results-overlay::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Scrollbar Thumb styles for search results */
+.search-results-overlay::-webkit-scrollbar-thumb {
+    background: #d87676;
+    border-radius: 4px;
+}
+
+/* Scrollbar Thumb hover styles for search results */
+.search-results-overlay::-webkit-scrollbar-thumb:hover {
+    background: #9a4444;
+}
+
+/* Style for individual track results */
+.search-results-overlay .track-result {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Hover effect for track results */
+.search-results-overlay .track-result:hover {
+    background-color: #d8d1d1;
+}
+
+/* Style for track image */
+.search-results-overlay .track-result img {
+    width: 64px;
+    height: 64px;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+
+/* Style for track text (title and artist) */
+.search-results-overlay .track-result div p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Style for track title */
+.search-results-overlay .track-result div p:first-child {
+    font-weight: bold;
+}
+
+/* Style for track artist */
+.search-results-overlay .track-result div p:last-child {
+    color: #666;
+    font-size: 14px;
 }

@@ -8,9 +8,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function MainApp() {
   const [code, setCode] = useState(null);
 
+  // Effect to check for the auth code in the URL
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const authCode = searchParams.get('code');
+    // If the auth code is found, set it in the state
     if (authCode && authCode !== code) {
       setCode(authCode);
     }
@@ -18,5 +20,7 @@ export default function MainApp() {
 
   const accessToken = useAuth(code);
 
+  // If the user is authenticated, render the Dashboard component
+  // Otherwise, render the Login component
   return code ? <Dashboard code={code} /> : <Login />;
 }
