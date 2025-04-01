@@ -1,0 +1,148 @@
+/* Player.css */
+.player {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px dashed transparent;
+    transition: border-color 0.3s ease;
+}
+
+/* Border When Dragged Over */
+.player.drag-over {
+    border-color: #1db954;
+}
+
+/* Player Content */
+.player-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Track styling */
+.track-left {
+    display: flex;
+    align-items: center;
+}
+
+/* Track Image */
+.track-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+/* Track Info Format */
+.track-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Track Title Text */
+.track-title {
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Track Artist Text */
+.track-artist {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Player Center Format */
+.player-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+}
+
+/* Player Center Control Format */
+.player-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+/* Player Center Control Button Style */
+.player-controls button {
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Player Center Control Button when Not Available */
+.player-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Player Center Control Button Hover Effect when Not Available */
+.player-controls button:hover:not(:disabled) {
+    opacity: 0.8;
+}
+
+/* Player Center Control Icon Style */
+.control-icon {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+}
+
+/* Player Playback Bar Format */
+.playback-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Playback Bar Slider Style */
+.progress-slider {
+    flex-grow: 1;
+    accent-color: #C41E3A;
+}
+
+/* Playback Bar Time Format */
+.time {
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* Player Volume Format */
+.volume-control {
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+}
+
+/* Volume Slider Style */
+.volume-slider {
+    width: 100px;
+    accent-color: #C41E3A;
+}
+
+/* Add drag-and-drop feedback */
+.track-result {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+/* Track Result Image */
+.track-result:active {
+    transform: scale(0.98);
+}
+
+/* Track Result Hover Effect */
+.track-result:hover {
+    opacity: 0.8;
+}

@@ -30,3 +30,16 @@
     border-color: #1db954;
     box-shadow: 0 0 5px rgba(29, 185, 84, 0.5);
 }
+
+/* Add hover effects for the track results */
+.track-result {
+    transition: opacity 0.3s ease;
+}
+
+.track-result:hover {
+    opacity: 0.8; /* Slight fade on hover */
+}
+
+.track-result:active {
+    transform: scale(0.98); /* Shrink effect when clicked */
+}

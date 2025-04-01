@@ -6,7 +6,10 @@ import Sidebar from './Sidebar';
 import Search from './Search';
 import Home from './Home';
 import Playlists from './Playlists';
+import PlaylistDetail from './PlaylistDetail';
 import Users from './Users';
+import Recommendation from './Recommendation';
+import ArtistInfo from './ArtistInfo'; // Import ArtistInfo
 import './Dashboard.css';
 import './Sidebar.css';
 import TrackSearchResult from './TrackSearchResult';
@@ -18,40 +21,99 @@ const spotifyApi = new SpotifyWebApi({
 
 export default function Dashboard({ code }) {
     const accessToken = useAuth(code);
-    const [playingTrack, setPlayingTrack] = useState(null);
+    const [trackUris, setTrackUris] = useState([]);
+    const [playlistContext, setPlaylistContext] = useState(null);
     const [activeSection, setActiveSection] = useState('home');
+    const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+    const [selectedArtistId, setSelectedArtistId] = useState(null); // New state for artist
     const [displayedResults, setDisplayedResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
-    function chooseTrack(track) {
-        setPlayingTrack(track);
+    // Function to choose a track and set the playlist context
+    function chooseTrack(track, additionalTracks = [], playlistUri = null, offset = null) {
+        console.log('Track chosen:', track);
+        if (playlistUri && offset !== null) {
+            setPlaylistContext({ uri: playlistUri, offset });
+            setTrackUris([track.uri, ...additionalTracks.map(t => t.uri)]);
+        } else {
+            setTrackUris([track.uri, ...additionalTracks.map(t => t.uri)]);
+            setPlaylistContext(null);
+        }
     }
 
-    // Effect to set the access token for Spotify API when available
+    // Effect to set the access token for Spotify API
     useEffect(() => {
         if (!accessToken) return;
         spotifyApi.setAccessToken(accessToken);
     }, [accessToken]);
 
-    // Function to handle switching between sections
-    const handleSectionChange = (section) => {
+    // Function to handle switching between sections info and logic
+    const handleSectionChange = (section, id = null) => {
         setActiveSection(section);
+        if (section === 'playlist') {
+            setSelectedPlaylistId(id);
+            setSelectedArtistId(null);
+        } else if (section === 'artist') {
+            setSelectedArtistId(id);
+            setSelectedPlaylistId(null);
+        } else {
+            setSelectedPlaylistId(null);
+            setSelectedArtistId(null);
+        }
         setDisplayedResults([]);
     };
 
-    // Function to render the content based on the active section
+    // Function to handle switching between sections
     const renderContent = () => {
         switch (activeSection) {
-            case 'home':
-                return <Home />;
             case 'playlists':
-                return <Playlists accessToken={accessToken} spotifyApi={spotifyApi} />;
+                return (
+                    <Playlists 
+                        accessToken={accessToken} 
+                        spotifyApi={spotifyApi} 
+                        onPlaylistClick={handleSectionChange} 
+                    />
+                );
+            case 'playlist':
+                return (
+                    <PlaylistDetail
+                        accessToken={accessToken}
+                        spotifyApi={spotifyApi}
+                        playlistId={selectedPlaylistId}
+                        chooseTrack={chooseTrack}
+                        onArtistClick={handleSectionChange}
+                    />
+                );
             case 'users':
-                return <Users />;
+                return <Users spotifyApi={spotifyApi} accessToken={accessToken} />;
+            case 'recommendation':
+                return (
+                    <Recommendation 
+                        spotifyApi={spotifyApi} 
+                        accessToken={accessToken} 
+                        chooseTrack={chooseTrack} 
+                    />
+                );
+            case 'artist':
+                return (
+                    <ArtistInfo
+                        accessToken={accessToken}
+                        spotifyApi={spotifyApi}
+                        artistId={selectedArtistId}
+                        chooseTrack={chooseTrack}
+                    />
+                );
             default:
-                return <Home />;
+                return (
+                    <Home 
+                        spotifyApi={spotifyApi} 
+                        accessToken={accessToken} 
+                        chooseTrack={chooseTrack} 
+                        onSectionChange={handleSectionChange} 
+                    />
+                );
         }
-    }
+    };
 
     return (
         <div className="dashboard-container">
@@ -71,7 +133,6 @@ export default function Dashboard({ code }) {
                     {renderContent()}
                 </div>
 
-                {/* Display search results as an overlay */}
                 {displayedResults.length > 0 && (
                     <div className="search-results-overlay" onClick={() => setDisplayedResults([])}>
                         {displayedResults.map(track => (
@@ -85,7 +146,12 @@ export default function Dashboard({ code }) {
                 )}
 
                 <div className="player-container">
-                    <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+                    <Player 
+                        accessToken={accessToken} 
+                        trackUri={trackUris}
+                        playlistContext={playlistContext}
+                        chooseTrack={chooseTrack}
+                    />
                 </div>
             </div>
         </div>

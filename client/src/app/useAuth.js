@@ -1,3 +1,4 @@
+// useAuth.js
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -7,7 +8,7 @@ const authState = {
   refreshToken: null,
   expiresIn: null,
   hasFetched: false,
-  isFetching: false, // New flag to fix concurrent requests issue
+  isFetching: false,
 };
 
 export default function useAuth(code) {
@@ -25,9 +26,8 @@ export default function useAuth(code) {
       return;
     }
 
-    authState.isFetching = true; // Mark as fetching to block concurrent requests
+    authState.isFetching = true;
 
-    // Fetch the access token
     axios
       .post('http://localhost:3001/login', { code })
       .then(res => {
@@ -44,7 +44,7 @@ export default function useAuth(code) {
       .catch(err => {
         console.log('Login request failed:', err.response ? err.response.data : err);
         authState.isFetching = false;
-        window.location = '/';
+        window.location = '/'; // Redirect to login page
       });
   }, [code]);
 
@@ -63,7 +63,7 @@ export default function useAuth(code) {
         })
         .catch(err => {
           console.log('Refresh failed:', err.response ? err.response.data : err);
-          window.location = '/';
+          window.location = '/'; // Redirect to login page
         });
     }, (expiresIn - 60) * 1000);
 
@@ -71,4 +71,14 @@ export default function useAuth(code) {
   }, [refreshToken, expiresIn]);
 
   return accessToken;
+}
+
+// Function to force logout and reset auth state
+export function logout() {
+  authState.accessToken = null;
+  authState.refreshToken = null;
+  authState.expiresIn = null;
+  authState.hasFetched = false;
+  authState.isFetching = false;
+  window.location = '/'; // Redirect to login page
 }

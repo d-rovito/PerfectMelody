@@ -1,0 +1,140 @@
+/* Initial Component Formatting */
+.playlist-detail-container {
+    padding: 20px;
+}
+
+/* Playlist Header (Sticks) */
+.playlist-header-sticky {
+    position: sticky;
+    top: 0;
+    background-color: #181818;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Playlist Header Image */
+.playlist-detail-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+/* Playlist Header Text */
+.playlist-info {
+    flex: 1;
+}
+
+/* Each Track Styling */
+.track-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #282828;
+    cursor: pointer;
+    background-color: #282828;
+}
+
+/* Each Track Image */
+.track-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+/* Track Title */
+.track-item p {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+/* Playlist Edit Button */
+.edit-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #1db954;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Edit Button Hover Effect */
+.edit-button:hover {
+    background-color: #1ed760;
+}
+
+/* Edit Playlist Title */
+.edit-input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #535353;
+    border-radius: 4px;
+    background-color: #282828;
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* Edit Playlist Description */
+.edit-textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #535353;
+    border-radius: 4px;
+    background-color: #282828;
+    color: white;
+    min-height: 60px;
+    resize: vertical;
+}
+
+/* Edit Playlist Image Upload */
+.image-upload {
+    margin: 10px 0;
+}
+
+/* Save, Cancel Buttons Format */
+.edit-buttons {
+    margin-top: 10px;
+}
+
+/* Save, Cancel Buttons */
+.edit-buttons button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    background-color: #535353;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Save, Cancel Buttons Hover Effect */
+.edit-buttons button:hover {
+    background-color: #1db954;
+}
+
+/* Edit Notice */
+.edit-notice {
+    font-size: 0.9rem;
+    color: #b3b3b3;
+    margin: 10px 0;
+    font-style: italic;
+}
+
+/* Artist Link */
+.artist-link {
+    color: #1db954;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Artist Link Hover Effect */
+.artist-link:hover {
+    text-decoration: underline;
+    color: #1ed760;
+}

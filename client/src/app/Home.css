@@ -1,0 +1,67 @@
+/* Main Home Formatting */
+.home {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Welcome Text */
+.welcome {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Recently Played and Some User Playlists */
+.home-recently-played, .home-featured-playlists {
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 950px;
+}
+
+/* Section Titles */
+.home h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Track and Playlist Lists */
+.home-track-list, .home-playlist-grid {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Space Between Tracks */
+.home-track-item, .home-playlist-item {
+    cursor: pointer;
+    text-align: center;
+    flex: 0 0 auto;
+    width: 150px;
+}
+
+/* Track Images */
+.home-track-item img, .home-playlist-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Track and Playlist Titles */
+.home-track-item p, .home-playlist-item p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 18px;
+    color: #fff;
+}
