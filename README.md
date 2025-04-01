@@ -26,4 +26,4 @@ This web app uses **React** (with **Next.js** router) and the **Spotify API** to
 
 ## Current Look
 
-![Current Look](https://go.screenpal.com/watch/cTfVfHniJnp)
+[Current Look (Link to Video Demo)](https://go.screenpal.com/watch/cTfVfHniJnp)
