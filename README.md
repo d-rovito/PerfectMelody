@@ -14,11 +14,11 @@ This web app uses **React** (with **Next.js** router) and the **Spotify API** to
    ```
    git clone https://github.com/your-username/ai-spotify-streaming-app.git
 
-2. cd into the server directory and start the server:
+2. cd into the client directory:
     ``` 
-    npm run devStart
+    cd client
 
-3. cd into the client directory and start the app:
+3. run the app (starts both client and server for you):
     ``` 
     npm run dev
 

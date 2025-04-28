@@ -1,11 +1,15 @@
-/* Artist Info Format */
+:root {
+    --theme-color: #1db954;
+}
+
+/* Artist Info Container */
 .artist-info-container {
     padding: 20px;
     color: white;
     background-color: #181818;
 }
 
-/* Artist Main Info */
+/* Artist Header Section */
 .artist-header {
     display: flex;
     align-items: center;
@@ -15,7 +19,7 @@
     margin-bottom: 20px;
 }
 
-/* Artist Image */
+/* Artist Profile Image */
 .artist-image {
     width: 200px;
     height: 200px;
@@ -24,6 +28,7 @@
     margin-right: 20px;
 }
 
+/* Artist Details Container */
 .artist-details {
     flex: 1;
 }
@@ -33,6 +38,7 @@
     margin: 0;
     font-size: 2.5rem;
     font-weight: bold;
+    color: white;
 }
 
 /* Artist Genres */
@@ -42,33 +48,33 @@
     color: #b3b3b3;
 }
 
-/* Artist Bio */
+/* Artist Stats (Followers and Popularity) */
 .artist-stats {
     margin: 10px 0 0;
     font-size: 1rem;
     color: #b3b3b3;
 }
 
-/* Artist Space Between bio */
+/* Spacing Between Stats */
 .artist-stats span {
     margin-right: 15px;
 }
 
-/* Artist Top Tracks Section */
+/* Top Tracks Section */
 .top-tracks {
     padding: 20px;
     background-color: #282828;
     border-radius: 8px;
 }
 
-/* Top Track Heading */
+/* Top Tracks Heading */
 .top-tracks h2 {
     margin: 0 0 15px;
     font-size: 1.6rem;
     color: white;
 }
 
-/* Top Track List */
+/* Track Item */
 .track-item {
     display: flex;
     align-items: center;
@@ -77,12 +83,12 @@
     border-bottom: 1px solid #404040;
 }
 
-/* Top Track Item Hover Effect */
+/* Track Item Hover Effect */
 .track-item:hover {
     background-color: #333333;
 }
 
-/* Top Track Image */
+/* Track Image */
 .track-image {
     width: 50px;
     height: 50px;
@@ -90,7 +96,7 @@
     margin-right: 10px;
 }
 
-/* Top Track Name */
+/* Track Name */
 .track-item p {
     margin: 0;
     font-size: 1rem;

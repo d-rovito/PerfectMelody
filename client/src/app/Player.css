@@ -1,17 +1,22 @@
-/* Player.css */
-.player {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 2px dashed transparent;
-    transition: border-color 0.3s ease;
+:root {
+    --theme-color: #1db954;
 }
 
-/* Border When Dragged Over */
+/* Player.css */
+.player {
+    background: linear-gradient(180deg, #282828, #181818);
+    color: #fff;
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px dashed transparent;
+}
+
+/* Drag-over effect */
 .player.drag-over {
-    border-color: #1db954;
+    border-color: var(--theme-color);
+    background: #222;
 }
 
 /* Player Content */
@@ -20,129 +25,428 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 20px;
 }
 
-/* Track styling */
+/* Track Left */
 .track-left {
     display: flex;
     align-items: center;
+    min-width: 200px;
 }
 
-/* Track Image */
-.track-image {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    margin-right: 15px;
+/* Track Image Container */
+.track-image-container {
+    position: relative;
+    width: 80px; /* Desired size */
+    height: 80px;
+    margin-right: 20px;
+    overflow: hidden; /* Clip overflow */
 }
 
-/* Track Info Format */
+/* Playing Animation */
+.track-image-container.playing {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Track Image (Vinyl Record) */
+.player-track-image {
+    width: 100% !important; /* Force full container size */
+    height: 100% !important;
+    max-width: none !important; /* Remove any caps */
+    border-radius: 50%; /* Circular shape for vinyl */
+    background: radial-gradient(circle at center, #000 60%, #333 100%); /* Black vinyl disc */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.5); /* Depth */
+    position: relative;
+    z-index: 1;
+    display: block; /* Ensure proper rendering */
+}
+
+/* Central Label (Album Art) */
+.player-track-image::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%; /* Central label */
+    height: 40%;
+    background: inherit; /* Inherit album art */
+    background-size: 250%; /* Zoom for label */
+    background-position: center;
+    border-radius: 50%;
+    border: 2px solid #fff; /* White border */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+
+/* Spinning Animation when Playing */
+.track-image-container.playing .player-track-image {
+    animation: spin 15s linear infinite; /* 15-second full rotation */
+}
+
+/* Track Info */
 .track-info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-/* Track Title Text */
+/* Track Title */
 .track-title {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 600;
     color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
-/* Track Artist Text */
+/* Track Artist */
 .track-artist {
-    margin: 5px 0 0;
-    font-size: 14px;
-    color: #ccc;
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #b3b3b3;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-/* Player Center Format */
+.track-artist:hover {
+    color: var(--theme-color);
+}
+
+/* Player Center */
 .player-center {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 400px;
+    flex: 1;
+    max-width: 500px;
 }
 
-/* Player Center Control Format */
+/* Player Controls */
 .player-controls {
     display: flex;
-    gap: 10px;
+    gap: 16px;
     justify-content: center;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 }
 
-/* Player Center Control Button Style */
+/* Control Buttons */
 .player-controls button {
     background-color: transparent;
     border: none;
-    padding: 8px;
+    padding: 10px;
     cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    border-radius: 50%;
 }
 
-/* Player Center Control Button when Not Available */
+.player-controls button:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.15);
+}
+
 .player-controls button:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
 }
 
-/* Player Center Control Button Hover Effect when Not Available */
-.player-controls button:hover:not(:disabled) {
-    opacity: 0.8;
+/* Play/Pause Button */
+.player-controls .play-pause {
+    width: 36px;
+    height: 36px;
 }
 
-/* Player Center Control Icon Style */
+/* Control Icons */
 .control-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     filter: invert(1);
+    transition: filter 0.2s ease;
 }
 
-/* Player Playback Bar Format */
+.player-controls button:hover:not(:disabled) .control-icon {
+    filter: invert(1) brightness(1.2);
+}
+
+/* Playback Bar */
 .playback-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
 }
 
-/* Playback Bar Slider Style */
+/* Progress Slider */
 .progress-slider {
     flex-grow: 1;
-    accent-color: #C41E3A;
+    height: 6px;
+    border-radius: 3px;
+    background: #535353;
+    outline: none;
+    accent-color: var(--theme-color);
+    cursor: pointer;
+    transition: height 0.2s ease;
 }
 
-/* Playback Bar Time Format */
+.progress-slider:hover {
+    height: 8px;
+}
+
+/* Time */
 .time {
     font-size: 12px;
-    color: #ccc;
+    color: #b3b3b3;
+    min-width: 40px;
+    text-align: center;
 }
 
-/* Player Volume Format */
-.volume-control {
-    min-width: 100px;
+/* Player Right */
+.player-right {
     display: flex;
     align-items: center;
+    min-width: 150px;
 }
 
-/* Volume Slider Style */
+/* Volume Container */
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Volume Icon */
+.volume-icon {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    transition: filter 0.2s ease;
+}
+
+.volume-container:hover .volume-icon {
+    filter: invert(1) brightness(1.2);
+}
+
+/* Volume Slider */
 .volume-slider {
     width: 100px;
-    accent-color: #C41E3A;
-}
-
-/* Add drag-and-drop feedback */
-.track-result {
+    height: 6px;
+    border-radius: 3px;
+    background: #535353;
+    accent-color: var(--theme-color);
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: height 0.2s ease;
 }
 
-/* Track Result Image */
-.track-result:active {
-    transform: scale(0.98);
+.volume-slider:hover {
+    height: 8px;
 }
 
-/* Track Result Hover Effect */
-.track-result:hover {
-    opacity: 0.8;
+/* Loading State */
+.player-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 80px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--theme-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* No Track State */
+.no-track, .error-message {
+    text-align: center;
+    font-size: 14px;
+    color: #b3b3b3;
+    padding: 20px;
+}
+
+/* Error Message */
+.error-message {
+    color: #ff4d4d;
+}
+
+/* Queue Button */
+.queue-button {
+    background: none;
+    border: none;
+    padding: 8px; /* Reduced from 10px to shrink hover circle */
+    margin-left: 8px; /* Add gap to separate from volume slider */
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.queue-button:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1); /* Reduced from 1.15 to minimize overlap */
+}
+
+.queue-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.queue-button .control-icon {
+    width: 28px;
+    height: 28px;
+    filter: invert(1);
+    transition: filter 0.2s ease;
+}
+
+.queue-button:hover:not(:disabled) .control-icon {
+    filter: invert(1) brightness(1.2);
+}
+
+/* Queue Modal */
+.queue-modal {
+    position: fixed;
+    bottom: 120px; /* Slightly higher to avoid overlapping player */
+    right: 20px;
+    width: 320px; /* Slightly wider for better readability */
+    background: linear-gradient(180deg, #282828, #181818); /* Match player gradient */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Match player shadow */
+    z-index: 1000;
+    color: #fff;
+}
+
+.queue-modal-content {
+    padding: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-color) #282828;
+}
+
+.queue-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.queue-modal-content::-webkit-scrollbar-track {
+    background: #282828;
+}
+
+.queue-modal-content::-webkit-scrollbar-thumb {
+    background: var(--theme-color);
+    border-radius: 4px;
+}
+
+.queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.queue-header h3 {
+    margin: 0;
+    font-size: 16px; /* Match track-title font size */
+    font-weight: 600; /* Match track-title weight */
+    color: #fff;
+}
+
+.close-queue-button {
+    background: none;
+    border: none;
+    color: #b3b3b3; /* Match track-artist color */
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 4px 8px;
+}
+
+.close-queue-button:hover {
+    color: var(--theme-color); /* Match hover effects */
+    background: none; /* Explicitly remove background on hover */
+}
+
+.queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.queue-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05); /* Subtle background like control hover */
+    transition: background 0.2s ease;
+}
+
+.queue-item:hover {
+    background: rgba(255, 255, 255, 0.1); /* Match control hover */
+}
+
+.queue-track-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow like player-track-image */
+}
+
+.queue-track-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.queue-track-title {
+    margin: 0;
+    font-size: 14px; /* Slightly smaller than track-title */
+    font-weight: 500; /* Slightly lighter than track-title */
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.queue-track-artist {
+    margin: 2px 0 0;
+    font-size: 12px; /* Match track-artist */
+    color: #b3b3b3;
+    transition: color 0.2s ease;
+}
+
+.queue-track-artist:hover {
+    color: var(--theme-color); /* Match track-artist hover */
+}
+
+.no-queue {
+    text-align: center;
+    font-size: 14px;
+    color: #b3b3b3; /* Match no-track */
+    padding: 16px;
 }

@@ -1,13 +1,16 @@
+:root {
+    --theme-color: #1db954; /* Default green */
+}
+
 /* Users section container */
 .users {
     height: 88vh;
-    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffffff;
+    background-color: #121212;
     overflow: hidden;
-    margin: 0; 
+    margin: 0;
     padding: 0;
 }
 
@@ -17,7 +20,7 @@
     background-color: #181818;
     padding: 20px;
     border-radius: 10px;
-    width: 90%; 
+    width: 90%;
     max-width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -27,7 +30,7 @@
     overflow: hidden;
 }
 
-/* User profile picture */
+/* Profile Picture */
 .profile-picture {
     width: 100px;
     height: 100px;
@@ -50,7 +53,7 @@
     margin: 5px 0;
 }
 
-/* Logout button */
+/* Logout Button */
 .logout-button {
     background-color: #ff4d4d;
     color: #fff;
@@ -63,7 +66,7 @@
     transition: background-color 0.3s;
 }
 
-/* Logout button hover effect */
+/* Logout button hover */
 .logout-button:hover {
     background-color: #cc0000;
 }
@@ -80,4 +83,38 @@
     background-color: #121212;
     margin: 0;
     padding: 0;
+}
+
+/* Theme Picker */
+.theme-picker {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.theme-picker label {
+    color: #b3b3b3;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.theme-picker input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: none;
+}
+
+/* Global use of theme color */
+button, .fetch-btn, .create-playlist-btn, .selection-circle.selected .inner-circle {
+    background-color: var(--theme-color);
+}
+
+/* Hover effects using theme color */
+button:hover, .fetch-btn:hover, .create-playlist-btn:hover {
+    background-color: var(--theme-color);
+    opacity: 0.9;
 }

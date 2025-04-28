@@ -1,0 +1,109 @@
+/* Theme Variables */
+:root {
+    --theme-color: #1db954;
+}
+
+/* Login Page */
+.login-page {
+    background: linear-gradient(180deg, #282828, #181818);
+    min-height: 100vh;
+    color: #fff;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Login Card */
+.login-card {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Login Header */
+.login-header {
+    margin-bottom: 24px;
+}
+
+/* Login Logo */
+.login-logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 12px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+/* Login Logo Hover */
+.login-logo:hover {
+    transform: scale(1.1);
+}
+
+/* Login Subtitle */
+.login-subtitle {
+    font-size: 1rem;
+    color: #b3b3b3;
+    margin: 8px 0 0;
+}
+
+/* Login Body */
+.login-body {
+    display: flex;
+    justify-content: center;
+}
+
+/* Login Button */
+.btn-success {
+    background-color: var(--theme-color);
+    border-color: var(--theme-color);
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Login Button Hover */
+.btn-success:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.4);
+}
+
+/* Login Button Active */
+.btn-success:active {
+    transform: scale(0.98);
+}
+
+/* Login Footer */
+.login-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: #b3b3b3;
+    font-size: 0.9rem;
+}
+
+/* Footer Links */
+.login-footer a {
+    color: var(--theme-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+/* Footer Links Hover */
+.login-footer a:hover {
+    color: #fff;
+}
+
+/* FadeIn Animation */
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}

@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-spring/web": "^9.5.5",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "next": "15.1.7",
+    "next": "^15.3.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-spotify-web-playback": "^0.14.7",
+    "react-tinder-card": "^1.6.4",
     "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {

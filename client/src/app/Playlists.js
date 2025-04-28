@@ -16,26 +16,39 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
     const fetchPlaylists = async () => {
         try {
             setLoading(true);
+            setPlaylists([]); // Clear previous state
             let allPlaylists = [];
             let offset = 0;
             const limit = 50;
             let total = 0;
+            const maxRetries = 3;
+            let attempt = 1;
 
-            do {
-                const response = await spotifyApi.getUserPlaylists({
-                    limit,
-                    offset
-                });
-                console.log('Fetched playlists:', response.body.items);
-                allPlaylists = allPlaylists.concat(response.body.items);
-                total = response.body.total;
-                offset += limit;
-            } while (offset < total);
+            while (attempt <= maxRetries) {
+                try {
+                    do {
+                        const response = await spotifyApi.getUserPlaylists({
+                            limit,
+                            offset
+                        });
+                        allPlaylists = allPlaylists.concat(response.body.items || []);
+                        total = response.body.total;
+                        offset += limit;
+                    } while (offset < total);
+                    break; // Exit retry loop on success
+                } catch (err) {
+                    if (attempt === maxRetries) throw err;
+                    console.warn(`Retry ${attempt} failed, retrying...`, err.message);
+                    await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+                    attempt++;
+                }
+            }
 
-            setPlaylists(allPlaylists || []);
+            console.log('Fetched playlists:', allPlaylists.map(p => p.name));
+            setPlaylists(allPlaylists);
             setLoading(false);
         } catch (err) {
-            console.error('Error fetching playlists:', err);
+            console.error('Error fetching playlists:', err.message, err.stack);
             setError('Failed to load playlists: ' + err.message);
             setLoading(false);
         }
@@ -43,7 +56,6 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
 
     useEffect(() => {
         if (!accessToken || !spotifyApi) return;
-        console.log('Initial fetch with accessToken:', accessToken);
         fetchPlaylists();
     }, [accessToken, spotifyApi]);
 
@@ -56,14 +68,14 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                 name: newPlaylistName || 'New Playlist',
                 public: false
             });
-            console.log('Created playlist:', createResponse.body);
+            console.log('Created playlist:', createResponse.body.name, createResponse.body.id);
             
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 2000));
             await fetchPlaylists();
             setCreateMode(null);
             setNewPlaylistName('');
         } catch (err) {
-            console.error('Error creating playlist:', err);
+            console.error('Error creating playlist:', err.message, err.stack);
             setError('Failed to create playlist: ' + err.message);
         }
     };
@@ -86,10 +98,10 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                 offset += limit;
             } while (offset < total);
 
-            setSelectedPlaylistTracks(allTracks);
+            setSelectedPlaylistTracks(allTracks || []);
             setSelectedPlaylistId(playlistId);
         } catch (err) {
-            console.error('Error fetching playlist tracks:', err);
+            console.error('Error fetching playlist tracks:', err.message, err.stack);
             setError('Failed to load playlist tracks: ' + err.message);
         }
     };
@@ -112,7 +124,7 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                 name: newPlaylistName || 'New Playlist',
                 public: false
             });
-            console.log('Created playlist from existing:', createResponse.body);
+            console.log('Created playlist from existing:', createResponse.body.name, createResponse.body.id);
             
             if (selectedSongs.length > 0) {
                 const chunks = [];
@@ -124,7 +136,7 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                 }
             }
             
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 2000));
             await fetchPlaylists();
             setCreateMode(null);
             setSelectedSongs([]);
@@ -132,103 +144,118 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
             setSelectedPlaylistTracks([]);
             setSelectedPlaylistId(null);
         } catch (err) {
-            console.error('Error creating playlist:', err);
+            console.error('Error creating playlist:', err.message, err.stack);
             setError('Failed to create playlist: ' + err.message);
         }
     };
 
-    if (loading) return <div>Loading playlists...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) return <div className="playlists-loading">Loading playlists...</div>;
+    if (error) return <div className="playlists-error">{error}</div>;
 
-    // If createMode is set to 'empty', show the empty playlist creation form
+    // Empty playlist creation form
     if (createMode === 'empty') {
         return (
-            <div className="playlists-container">
+            <div className="playlists-container create-form">
                 <h2>Create New Playlist</h2>
-                <input
-                    type="text"
-                    value={newPlaylistName}
-                    onChange={(e) => setNewPlaylistName(e.target.value)}
-                    placeholder="Enter playlist name"
-                    className="playlist-name-input"
-                />
-                <div>
-                    <button onClick={handleCreateEmpty}>Create</button>
-                    <button onClick={() => setCreateMode(null)}>Cancel</button>
+                <div className="create-playlist-form">
+                    <input
+                        type="text"
+                        value={newPlaylistName}
+                        onChange={(e) => setNewPlaylistName(e.target.value)}
+                        placeholder="Enter playlist name"
+                        className="playlist-name-input"
+                    />
+                    <div className="create-form-buttons">
+                        <button className="create-button" onClick={handleCreateEmpty}>
+                            Create
+                        </button>
+                        <button className="cancel-button" onClick={() => setCreateMode(null)}>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
         );
     }
 
-    // If createMode is set to 'fromExisting', show the existing playlists
+    // Playlist selection for creating from existing
     if (createMode === 'fromExisting' && !selectedPlaylistId) {
         return (
-            <div className="playlists-container">
+            <div className="playlists-container create-form">
                 <h2>Select Source Playlist</h2>
-                <input
-                    type="text"
-                    value={newPlaylistName}
-                    onChange={(e) => setNewPlaylistName(e.target.value)}
-                    placeholder="Enter new playlist name"
-                    className="playlist-name-input"
-                />
-                <div className="playlists-list">
-                    {playlists.map((playlist) => (
-                        <div 
-                            key={playlist.id} 
-                            className="playlist-item"
-                            onClick={() => fetchPlaylistTracks(playlist.id)}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            <div className="playlist-info">
-                                <h3>{playlist.name}</h3>
-                                <p>{playlist.tracks.total} tracks</p>
+                <div className="create-playlist-form">
+                    <input
+                        type="text"
+                        value={newPlaylistName}
+                        onChange={(e) => setNewPlaylistName(e.target.value)}
+                        placeholder="Enter new playlist name"
+                        className="playlist-name-input"
+                    />
+                    <div className="playlists-selection-list">
+                        {playlists.map((playlist) => (
+                            <div 
+                                key={playlist.id} 
+                                className="playlist-selection-item"
+                                onClick={() => fetchPlaylistTracks(playlist.id)}
+                            >
+                                <img
+                                    src={playlist.images && playlist.images.length > 0 ? playlist.images[0].url : '/placeholder.jpg'}
+                                    alt={`${playlist.name} cover`}
+                                    className="playlist-selection-image"
+                                />
+                                <div className="playlist-selection-info">
+                                    <h3>{playlist.name}</h3>
+                                    <p>{playlist.tracks.total} tracks</p>
+                                </div>
                             </div>
-                            <img
-                                src={playlist.images && playlist.images.length > 0 ? playlist.images[0].url : '/placeholder.jpg'}
-                                alt={`${playlist.name} cover`}
-                                className="playlist-image"
-                            />
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    <div className="create-form-buttons">
+                        <button className="cancel-button" onClick={() => setCreateMode(null)}>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
-                <button onClick={() => setCreateMode(null)}>Cancel</button>
             </div>
         );
     }
 
-    // If a playlist is selected, show the tracks in that playlist
+    // Song selection for creating from existing
     if (createMode === 'fromExisting' && selectedPlaylistId) {
         return (
-            <div className="playlists-container">
+            <div className="playlists-container create-form">
                 <h2>Select Songs</h2>
-                <div className="tracks-list">
+                <div className="tracks-selection-list">
                     {selectedPlaylistTracks.map(({ track }) => (
-                        <div key={track.id} className="track-item">
+                        <div key={track.id} className="track-selection-item">
                             <div 
-                                className="selection-circle"
+                                className={`selection-circle ${selectedSongs.includes(track.uri) ? 'selected' : ''}`}
                                 onClick={() => toggleSongSelection(track.uri)}
                             >
-                                <div 
-                                    className="inner-circle"
-                                    style={{
-                                        backgroundColor: selectedSongs.includes(track.uri) ? '#1db954' : 'grey'
-                                    }}
-                                />
+                                <div className="inner-circle" />
                             </div>
                             <img
                                 src={track.album.images[2]?.url || '/placeholder.jpg'}
                                 alt={`${track.name} cover`}
-                                className="track-image"
+                                className="track-selection-image"
                             />
-                            <span>{track.name} - {track.artists[0].name}</span>
+                            <div className="track-selection-info">
+                                <span className="track-name">{track.name}</span>
+                                <span className="track-artist">{track.artists[0].name}</span>
+                            </div>
                         </div>
                     ))}
                 </div>
-                <div>
-                    <button onClick={handleCreateFromExisting}>Done</button>
-                    <button onClick={() => setSelectedPlaylistId(null)}>Back</button>
-                    <button onClick={() => setCreateMode(null)}>Cancel</button>
+                <div className="create-form-buttons">
+                    <button className="create-button" onClick={handleCreateFromExisting}>
+                        Done
+                    </button>
+                    <button className="back-button" onClick={() => setSelectedPlaylistId(null)}>
+                        Back
+                    </button>
+                    <button className="cancel-button" onClick={() => setCreateMode(null)}>
+                        Cancel
+                    </button>
                 </div>
             </div>
         );
@@ -250,8 +277,10 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <h3>Create Playlist</h3>
+                        <h3>Create a Playlist</h3>
+                        <p className="modal-subtitle">Choose how you want to start your new playlist.</p>
                         <button 
+                            className="modal-button create-from-scratch"
                             onClick={() => {
                                 setCreateMode('empty');
                                 setShowModal(false);
@@ -260,6 +289,7 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                             Create from Scratch
                         </button>
                         <button 
+                            className="modal-button create-from-existing"
                             onClick={() => {
                                 setCreateMode('fromExisting');
                                 setShowModal(false);
@@ -267,7 +297,10 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                         >
                             Create from Other Playlists
                         </button>
-                        <button onClick={() => setShowModal(false)}>
+                        <button 
+                            className="modal-button cancel"
+                            onClick={() => setShowModal(false)}
+                        >
                             Cancel
                         </button>
                     </div>
@@ -275,7 +308,7 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
             )}
 
             {playlists.length === 0 ? (
-                <p>No playlists found.</p>
+                <p className="no-playlists">No playlists found.</p>
             ) : (
                 <div className="playlists-list">
                     {playlists.map((playlist) => (
@@ -284,6 +317,7 @@ export default function Playlists({ accessToken, spotifyApi, onPlaylistClick }) 
                                 src={playlist.images && playlist.images.length > 0 ? playlist.images[0].url : '/placeholder.jpg'}
                                 alt={`${playlist.name} cover`}
                                 className="playlist-image"
+                                onClick={() => onPlaylistClick('playlist', playlist.id)}
                             />
                             <div className="playlist-info">
                                 <h3

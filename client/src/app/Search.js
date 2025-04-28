@@ -49,7 +49,7 @@ export default function Search({ spotifyApi, accessToken, chooseTrack, setDispla
       <div className="search-container">
         <Form.Control
           type="search"
-          placeholder="Search Songs/Artists"
+          placeholder="Search Songs"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />

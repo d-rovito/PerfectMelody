@@ -1,4 +1,3 @@
-// Users.js
 import { useState, useEffect } from 'react';
 import { logout } from './useAuth';
 import './Users.css';
@@ -7,6 +6,7 @@ export default function Users({ spotifyApi, accessToken }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [themeColor, setThemeColor] = useState(() => localStorage.getItem('themeColor') || '#1db954');
 
     useEffect(() => {
         if (!accessToken || !spotifyApi) {
@@ -33,8 +33,17 @@ export default function Users({ spotifyApi, accessToken }) {
         fetchUserData();
     }, [accessToken, spotifyApi]);
 
+    useEffect(() => {
+        document.documentElement.style.setProperty('--theme-color', themeColor);
+        localStorage.setItem('themeColor', themeColor);
+    }, [themeColor]);
+
     const handleLogout = () => {
         logout();
+    };
+
+    const handleColorChange = (e) => {
+        setThemeColor(e.target.value);
     };
 
     if (loading) return <div className="loading">Loading user info...</div>;
@@ -52,6 +61,17 @@ export default function Users({ spotifyApi, accessToken }) {
                     <h2 className="user-name">{user.display_name || 'User'}</h2>
                     <p className="user-email">{user.email || 'No email available'}</p>
                     <p className="user-followers">Followers: {user.followers.total}</p>
+
+                    <div className="theme-picker">
+                        <label htmlFor="themeColorPicker">Select Theme Color:</label>
+                        <input
+                            type="color"
+                            id="themeColorPicker"
+                            value={themeColor}
+                            onChange={handleColorChange}
+                        />
+                    </div>
+
                     <button className="logout-button" onClick={handleLogout}>
                         Log Out
                     </button>
